@@ -1,4 +1,16 @@
-/***************************************************
+/*
+This is a fork of the Adafruit_ILI9341 library for Arduino and 
+compatible boards. The purpose of the fork is to:
+
+ 1. Use of the ConnD_GFX library for TFT display 
+ 
+This library will be used for the ConnDuino board projects.
+For more info about the board visit:  www.connduino.com
+
+
+
+              ADAFRUIT_ILI9341 master, copyright notice
+=========================================================================
   This is our library for the Adafruit ILI9341 Breakout and Shield
   ----> http://www.adafruit.com/products/1651
 
@@ -13,7 +25,7 @@
   MIT license, all text above must be included in any redistribution
  ****************************************************/
 
-#include "Adafruit_ILI9341.h"
+#include "ConnD_ILI9341.h"
 #include <avr/pgmspace.h>
 #include <limits.h>
 #include "pins_arduino.h"
@@ -21,8 +33,8 @@
 #include <SPI.h>
 
 // Constructor when using software SPI.  All output pins are configurable.
-Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t mosi,
-				   int8_t sclk, int8_t rst, int8_t miso) : Adafruit_GFX(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
+ConnD_ILI9341::ConnD_ILI9341(int8_t cs, int8_t dc, int8_t mosi,
+		             int8_t sclk, int8_t rst, int8_t miso) : ConnD_GFX(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
   _cs   = cs;
   _dc   = dc;
   _mosi  = mosi;
@@ -35,7 +47,7 @@ Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t mosi,
 
 // Constructor when using hardware SPI.  Faster, but must use SPI pins
 // specific to each board type (e.g. 11,13 for Uno, 51,52 for Mega, etc.)
-Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t rst) : Adafruit_GFX(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
+ConnD_ILI9341::ConnD_ILI9341(int8_t cs, int8_t dc, int8_t rst) : ConnD_GFX(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
   _cs   = cs;
   _dc   = dc;
   _rst  = rst;
@@ -43,7 +55,7 @@ Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t rst) : Adafruit_
   _mosi  = _sclk = 0;
 }
 
-void Adafruit_ILI9341::spiwrite(uint8_t c) {
+void ConnD_ILI9341::spiwrite(uint8_t c) {
 
   //Serial.print("0x"); Serial.print(c, HEX); Serial.print(", ");
 
@@ -81,7 +93,7 @@ void Adafruit_ILI9341::spiwrite(uint8_t c) {
 }
 
 
-void Adafruit_ILI9341::writecommand(uint8_t c) {
+void ConnD_ILI9341::writecommand(uint8_t c) {
   *dcport &=  ~dcpinmask;
   //digitalWrite(_dc, LOW);
   //*clkport &= ~clkpinmask; // clkport is a NULL pointer when hwSPI==true
@@ -96,7 +108,7 @@ void Adafruit_ILI9341::writecommand(uint8_t c) {
 }
 
 
-void Adafruit_ILI9341::writedata(uint8_t c) {
+void ConnD_ILI9341::writedata(uint8_t c) {
   *dcport |=  dcpinmask;
   //digitalWrite(_dc, HIGH);
   //*clkport &= ~clkpinmask; // clkport is a NULL pointer when hwSPI==true
@@ -137,7 +149,7 @@ static inline void spi_end(void) {
 
 // Companion code to the above tables.  Reads and issues
 // a series of LCD commands stored in PROGMEM byte array.
-void Adafruit_ILI9341::commandList(uint8_t *addr) {
+void ConnD_ILI9341::commandList(uint8_t *addr) {
 
   uint8_t  numCommands, numArgs;
   uint16_t ms;
@@ -161,7 +173,7 @@ void Adafruit_ILI9341::commandList(uint8_t *addr) {
 }
 
 
-void Adafruit_ILI9341::begin(void) {
+void ConnD_ILI9341::begin(void) {
   if (_rst > 0) {
     pinMode(_rst, OUTPUT);
     digitalWrite(_rst, LOW);
@@ -271,7 +283,7 @@ void Adafruit_ILI9341::begin(void) {
   writedata(0x10);   //SAP[2:0];BT[3:0] 
  
   writecommand(ILI9341_VMCTR1);    //VCM control 
-  writedata(0x3e); //对比度调节
+  writedata(0x3e); //露脭卤脠露脠碌梅陆脷
   writedata(0x28); 
   
   writecommand(ILI9341_VMCTR2);    //VCM control2 
@@ -342,7 +354,7 @@ void Adafruit_ILI9341::begin(void) {
 }
 
 
-void Adafruit_ILI9341::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1,
+void ConnD_ILI9341::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1,
  uint16_t y1) {
 
   writecommand(ILI9341_CASET); // Column addr set
@@ -361,7 +373,7 @@ void Adafruit_ILI9341::setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1,
 }
 
 
-void Adafruit_ILI9341::pushColor(uint16_t color) {
+void ConnD_ILI9341::pushColor(uint16_t color) {
   if (hwSPI) spi_begin();
   //digitalWrite(_dc, HIGH);
   *dcport |=  dcpinmask;
@@ -376,7 +388,7 @@ void Adafruit_ILI9341::pushColor(uint16_t color) {
   if (hwSPI) spi_end();
 }
 
-void Adafruit_ILI9341::drawPixel(int16_t x, int16_t y, uint16_t color) {
+void ConnD_ILI9341::drawPixel(int16_t x, int16_t y, uint16_t color) {
 
   if((x < 0) ||(x >= _width) || (y < 0) || (y >= _height)) return;
 
@@ -397,7 +409,7 @@ void Adafruit_ILI9341::drawPixel(int16_t x, int16_t y, uint16_t color) {
 }
 
 
-void Adafruit_ILI9341::drawFastVLine(int16_t x, int16_t y, int16_t h,
+void ConnD_ILI9341::drawFastVLine(int16_t x, int16_t y, int16_t h,
  uint16_t color) {
 
   // Rudimentary clipping
@@ -426,7 +438,7 @@ void Adafruit_ILI9341::drawFastVLine(int16_t x, int16_t y, int16_t h,
 }
 
 
-void Adafruit_ILI9341::drawFastHLine(int16_t x, int16_t y, int16_t w,
+void ConnD_ILI9341::drawFastHLine(int16_t x, int16_t y, int16_t w,
   uint16_t color) {
 
   // Rudimentary clipping
@@ -449,12 +461,12 @@ void Adafruit_ILI9341::drawFastHLine(int16_t x, int16_t y, int16_t w,
   if (hwSPI) spi_end();
 }
 
-void Adafruit_ILI9341::fillScreen(uint16_t color) {
+void ConnD_ILI9341::fillScreen(uint16_t color) {
   fillRect(0, 0,  _width, _height, color);
 }
 
 // fill a rectangle
-void Adafruit_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+void ConnD_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
   uint16_t color) {
 
   // rudimentary clipping (drawChar w/big text requires this)
@@ -485,7 +497,7 @@ void Adafruit_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 
 
 // Pass 8-bit (each) R,G,B, get back 16-bit packed color
-uint16_t Adafruit_ILI9341::color565(uint8_t r, uint8_t g, uint8_t b) {
+uint16_t ConnD_ILI9341::color565(uint8_t r, uint8_t g, uint8_t b) {
   return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
 }
 
@@ -498,7 +510,7 @@ uint16_t Adafruit_ILI9341::color565(uint8_t r, uint8_t g, uint8_t b) {
 #define MADCTL_BGR 0x08
 #define MADCTL_MH  0x04
 
-void Adafruit_ILI9341::setRotation(uint8_t m) {
+void ConnD_ILI9341::setRotation(uint8_t m) {
 
   if (hwSPI) spi_begin();
   writecommand(ILI9341_MADCTL);
@@ -529,7 +541,7 @@ void Adafruit_ILI9341::setRotation(uint8_t m) {
 }
 
 
-void Adafruit_ILI9341::invertDisplay(boolean i) {
+void ConnD_ILI9341::invertDisplay(boolean i) {
   if (hwSPI) spi_begin();
   writecommand(i ? ILI9341_INVON : ILI9341_INVOFF);
   if (hwSPI) spi_end();
@@ -539,7 +551,7 @@ void Adafruit_ILI9341::invertDisplay(boolean i) {
 ////////// stuff not actively being used, but kept for posterity
 
 
-uint8_t Adafruit_ILI9341::spiread(void) {
+uint8_t ConnD_ILI9341::spiread(void) {
   uint8_t r = 0;
 
   if (hwSPI) {
@@ -573,7 +585,7 @@ uint8_t Adafruit_ILI9341::spiread(void) {
   return r;
 }
 
- uint8_t Adafruit_ILI9341::readdata(void) {
+ uint8_t ConnD_ILI9341::readdata(void) {
    digitalWrite(_dc, HIGH);
    digitalWrite(_cs, LOW);
    uint8_t r = spiread();
@@ -583,7 +595,7 @@ uint8_t Adafruit_ILI9341::spiread(void) {
 }
  
 
-uint8_t Adafruit_ILI9341::readcommand8(uint8_t c, uint8_t index) {
+uint8_t ConnD_ILI9341::readcommand8(uint8_t c, uint8_t index) {
    if (hwSPI) spi_begin();
    digitalWrite(_dc, LOW); // command
    digitalWrite(_cs, LOW);
@@ -608,7 +620,7 @@ uint8_t Adafruit_ILI9341::readcommand8(uint8_t c, uint8_t index) {
  
 /*
 
- uint16_t Adafruit_ILI9341::readcommand16(uint8_t c) {
+ uint16_t ConnD_ILI9341::readcommand16(uint8_t c) {
  digitalWrite(_dc, LOW);
  if (_cs)
  digitalWrite(_cs, LOW);
@@ -625,7 +637,7 @@ uint8_t Adafruit_ILI9341::readcommand8(uint8_t c, uint8_t index) {
  return r;
  }
  
- uint32_t Adafruit_ILI9341::readcommand32(uint8_t c) {
+ uint32_t ConnD_ILI9341::readcommand32(uint8_t c) {
  digitalWrite(_dc, LOW);
  if (_cs)
  digitalWrite(_cs, LOW);
