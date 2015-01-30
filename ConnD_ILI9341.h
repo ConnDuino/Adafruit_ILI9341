@@ -13,8 +13,8 @@
   MIT license, all text above must be included in any redistribution
  ****************************************************/
 
-#ifndef _ADAFRUIT_ILI9341H_
-#define _ADAFRUIT_ILI9341H_
+#ifndef _CONNDUINO_ILI9341H_
+#define _CONNDUINO_ILI9341H_
 
 #if ARDUINO >= 100
  #include "Arduino.h"
@@ -22,7 +22,7 @@
 #else
  #include "WProgram.h"
 #endif
-#include <Adafruit_GFX.h>
+#include <ConnD_GFX.h>
 #include <avr/pgmspace.h>
 
 
@@ -107,13 +107,13 @@
 #define ILI9341_GREENYELLOW 0xAFE5      /* 173, 255,  47 */
 #define ILI9341_PINK        0xF81F
 
-class Adafruit_ILI9341 : public Adafruit_GFX {
+class ConnD_ILI9341 : public ConnD_GFX {
 
  public:
 
-  Adafruit_ILI9341(int8_t _CS, int8_t _DC, int8_t _MOSI, int8_t _SCLK,
+  ConnD_ILI9341(int8_t _CS, int8_t _DC, int8_t _MOSI, int8_t _SCLK,
 		   int8_t _RST, int8_t _MISO);
-  Adafruit_ILI9341(int8_t _CS, int8_t _DC, int8_t _RST = -1);
+  ConnD_ILI9341(int8_t _CS, int8_t _DC, int8_t _RST = -1);
 
   void     begin(void),
            setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1),
@@ -161,4 +161,4 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
 #endif
 };
 
-#endif
+#endif  //_CONNDUINO_ILI9341H_
