@@ -1,3 +1,21 @@
+This is a fork of the Adafruit_ILI9341 library for Arduino and combatible boards. The purpose of the fork is to:
+ 1. Use of the ConnD_GFX library for TFT display 
+
+The library works with TFT displays that are equipped with ILI9341 chip. 
+
+This library will be used for the ConnDuino board projects. For more info about the board visit:  www.connduino.com
+
+              DEPENDENCIES
+=========================================================================
+Requires the ConnD_GFX library.
+
+              INSTALLATION 
+=========================================================================
+To download, click the DOWNLOAD ZIP button, uncompress and rename the uncompressed folder to "ConnD_ILI9341". Place the "ConnD_ILI9341" library folder to your arduino environment "<sketch folder>/libraries" subfolder. You can see, and even change, your <sketch folder> in the IDE under the menu File>Preferences. You may need to create the libraries subfolder if this is your first library. Restart the IDE.
+
+
+              ADAFRUIT_ILI9341 master, README 
+=========================================================================
 This is a library for the Adafruit ILI9341 display products
 
 This library works with the Adafruit 2.8" Touch Shield V2 (SPI)
@@ -14,8 +32,4 @@ products from Adafruit!
 Written by Limor Fried/Ladyada for Adafruit Industries.
 MIT license, all text above must be included in any redistribution
 
-To download. click the DOWNLOADS button in the top right corner, rename the uncompressed folder Adafruit_ILI9341. Check that the Adafruit_ILI9341 folder contains Adafruit_ILI9341.cpp and Adafruit_ILI9341.
 
-Place the Adafruit_ILI9341 library folder your arduinosketchfolder/libraries/ folder. You may need to create the libraries subfolder if its your first library. Restart the IDE
-
-Also requires the Adafruit_GFX library for Arduino.
