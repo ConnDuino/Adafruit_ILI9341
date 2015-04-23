@@ -469,30 +469,30 @@ void ConnD_ILI9341::fillScreen(uint16_t color) {
 void ConnD_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
   uint16_t color) {
 
-  // rudimentary clipping (drawChar w/big text requires this)
-  if((x >= _width) || (y >= _height)) return;
-  if((x + w - 1) >= _width)  w = _width  - x;
-  if((y + h - 1) >= _height) h = _height - y;
+	//ConnD_GFX::fillRect(x,y,w,h,color);
 
-  if (hwSPI) spi_begin();
-  setAddrWindow(x, y, x+w-1, y+h-1);
+	// rudimentary clipping (drawChar w/big text requires this)
+	if ((x >= _width) || (y >= _height)) return;
+	if ((x + w - 1) >= _width)  w = _width - x;
+	if ((y + h - 1) >= _height) h = _height - y;
+	
+	 if (hwSPI) spi_begin();
+	setAddrWindow(x, y, x + w - 1, y + h - 1);
+	
+	uint8_t hi = color >> 8, lo = color;
+	
+	* dcport |= dcpinmask;
+	//digitalWrite(_dc, HIGH);
+	* csport &= ~cspinmask;
+	//digitalWrite(_cs, LOW);
+		
+	for (y = h; y > 0; y--) 
+		for (x = w; x > 0; x--) {
+			spiwrite(hi);
+			spiwrite(lo);
+		}
+	
 
-  uint8_t hi = color >> 8, lo = color;
-
-  *dcport |=  dcpinmask;
-  //digitalWrite(_dc, HIGH);
-  *csport &= ~cspinmask;
-  //digitalWrite(_cs, LOW);
-
-  for(y=h; y>0; y--) {
-    for(x=w; x>0; x--) {
-      spiwrite(hi);
-      spiwrite(lo);
-    }
-  }
-  //digitalWrite(_cs, HIGH);
-  *csport |= cspinmask;
-  if (hwSPI) spi_end();
 }
 
 
