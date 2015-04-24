@@ -114,13 +114,15 @@ class ConnD_ILI9341 : public ConnD_GFX {
   ConnD_ILI9341(int8_t _CS, int8_t _DC, int8_t _MOSI, int8_t _SCLK,
 		   int8_t _RST, int8_t _MISO);
   ConnD_ILI9341(int8_t _CS, int8_t _DC, int8_t _RST = -1);
+ 
 
   void     begin(void),
            setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1),
            pushColor(uint16_t color),
            fillScreen(uint16_t color),
            drawPixel(int16_t x, int16_t y, uint16_t color),
-           drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color),
+		   drawByte(int16_t x, int16_t y, uint8_t _byte, uint16_t color, uint16_t bg, uint8_t horizontal),
+		   drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color),
            drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color),
            fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
              uint16_t color),

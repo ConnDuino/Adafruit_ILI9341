@@ -409,6 +409,37 @@ void ConnD_ILI9341::drawPixel(int16_t x, int16_t y, uint16_t color) {
 }
 
 
+void ConnD_ILI9341::drawByte(int16_t  x,	 int16_t  y,	uint8_t b, 
+							 uint16_t color, uint16_t bg,	uint8_t horizontal) {
+
+	
+	if (hwSPI) spi_begin();
+	if (horizontal) setAddrWindow(x, y, x + 7, y);
+	else			setAddrWindow(x, y, x,    y + 7);
+	
+	*dcport |= dcpinmask;
+	*csport &= ~cspinmask;
+
+	uint8_t colorhi = color >> 8, bghi = bg >> 8;
+	uint8_t colorlo = color,      bglo = bg;
+
+	for (uint8_t i = 0; i < 8; i++){
+		if (b & 128){
+			spiwrite(colorhi);
+			spiwrite(colorlo);
+		}
+		else{
+			spiwrite(bghi);
+			spiwrite(bglo);
+		}
+		b <<= 1;
+	}
+
+	*csport |= cspinmask;
+	if (hwSPI) spi_end();
+}
+
+
 void ConnD_ILI9341::drawFastVLine(int16_t x, int16_t y, int16_t h,
  uint16_t color) {
 
